@@ -1,0 +1,42 @@
+.profileCard {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  width:200px;
+  background-color:#F4E5FF;
+
+}
+
+.profileCard:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.top {
+  width: 100%;
+  padding-top: 100%;
+  border-radius: 50%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.top img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+
+.bottom {
+  padding: 1rem 0;
+}
+
+.bottom p {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-weight: 500;
+}

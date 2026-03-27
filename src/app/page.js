@@ -1,11 +1,12 @@
-import Image from "next/image";
+import styles from "./page.module.css";
 import Card from "./components/Card";
 import Filters from "./components/Filters";
+import Link from "next/link";
 
 
   async function fetchTitles() {
     const response = await fetch(
-      "https://web.ics.purdue.edu/%7Ezong6/profile-app/get-titles.php",
+      "https://web.ics.purdue.edu/~zong6/profile-app/get-titles.php",
       {next: { revalidate: 60 },}
     );
     const titles = await response.json();
@@ -14,7 +15,7 @@ import Filters from "./components/Filters";
 
   async function getData({title,search}) {
     const response = await fetch(
-      `https://web.ics.purdue.edu/~zong6/profile-app/fetch-data-with-filter.php?title=${title}&search=${search}&limit=1000`,
+      `https://web.ics.purdue.edu/~zong6/profile-app/fetch-data-with-filter.php?title=${title}&name=${search}&limit=1000`,
       { next: { revalidate: 60 } }
     );
     const data = await response.json();
@@ -27,8 +28,8 @@ export const metaData = {
 export default async function Home({searchParams}) {
 
   const searchParamsData = await searchParams;
-  const selectedTitle = searchParamsData.title ? searchParamsData.title : "";
-  const selectedSearch = searchParamsData.search ? searchParamsData.search : "";
+  const selectedTitle = searchParamsData && searchParamsData.title ? searchParamsData.title : "";
+  const selectedSearch = searchParamsData && searchParamsData.search ? searchParamsData.search : "";
   const [titles, profiles] = await Promise.all([ fetchTitles(), getData({title: selectedTitle, search: selectedSearch}) ]);
 
   console.log("Titles:", titles);
@@ -37,13 +38,21 @@ export default async function Home({searchParams}) {
 
   return (
     <div>
-      <h1>
-        Profile Directory
-      </h1>
+      <h1>My Profile App (via next)</h1>
       <Filters titles={titles} title={selectedTitle} name={selectedSearch}/>
-      <div className="profiles-container">
-        {profiles.map(profile => <Card key={profile.name} profile={profile} />)}
-      </div>
+      <div className="grid">
+        {profiles && profiles.length > 0
+          ? profiles.map((profile) => (
+            <Link key={profile.id} href={`/profile/${profile.id}`}> 
+              <Card
+                name={profile.name}
+                title={profile.title}
+                image={profile.image_url}
+              />
+              </Link>
+            ))
+          : <p>No profiles found.</p>}
+          </div>
     </div>
   );
 }
