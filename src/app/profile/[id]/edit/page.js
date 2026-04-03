@@ -1,5 +1,5 @@
 import prisma from "@/app/lib/prisma";
-import AddProfileForm from "@/components/AddProfileForm";
+import AddProfileForm from "@/app/components/AddProfileForm";
 
 async function fetchProfile(id) {
   const data = await prisma.profiles.findUnique({
