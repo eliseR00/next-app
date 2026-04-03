@@ -1,12 +1,9 @@
+import prisma from "@/app/lib/prisma";
+
 async function fetchProfile(id) {
-  const response = await fetch(
-    `https://web.ics.purdue.edu/~zong6/profile-app/fetch-data-with-id.php?id=${id}`,
-  );
-  if (!response.ok) {
-    return null;
-  }
-  const data = await response.json();
-  console.log("Fetched profile data:", data);
+  const data = await prisma.profiles.findUnique({
+    where: { id: parseInt(id) },
+  });
   return data ? data : null;
 }
 export async function generateMetadata({ params }) {
