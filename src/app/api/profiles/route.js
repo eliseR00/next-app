@@ -1,4 +1,5 @@
-import prisma from '@/app/lib/prisma'
+
+import prisma from '@/lib/prisma'
 import { put } from "@vercel/blob";
 
 
@@ -34,9 +35,13 @@ export async function POST(request) {
       return Response.json({error: "Valid email is required"}, {status: 400});
     }else if(!bio || bio.trim() === ""){
       return Response.json({error: "Bio is required"}, {status: 400});
+    }else if(!image || image.size === 0 || image.size > 1024 * 1024){
+      console.log("Image validation failed. Size:", image.size);
+      return Response.json({error: "Image is required and must be less than 1MB"}, {status: 400});
     }
 console.log(name)
 console.log(image)
+
     const { url } = await put(name, image, { access: 'public', allowOverwrite: true });
 
     const newProfileData = {
@@ -46,7 +51,6 @@ console.log(image)
       bio: bio.trim(),
       image_url: url
     };
-    // profiles.push(newProfileData);
     await prisma.profiles.create({
         data: newProfileData
     })

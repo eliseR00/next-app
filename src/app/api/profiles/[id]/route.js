@@ -1,5 +1,5 @@
 import { put } from '@vercel/blob';
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -7,19 +7,18 @@ export const dynamic = 'force-dynamic';
 // GET single profile by ID
 export async function GET(request, { params }) {
     try {
-        // Get the id from params and convert it to a number
+        // TODO: get the id from params and convert it to a number
         const { id } = await params;
-        const profileId = parseInt(id);
+        const profileId = Number.parseInt(id, 10);
 
         if (isNaN(profileId)) {
             return Response.json({ error: 'Invalid profile ID' }, { status: 400 });
         }
 
-        // TODO: find the matching profile by id DONE
-            const profile = await prisma.profiles.findUnique({
-                where: { id: profileId },
-            });
-        // const profile = await prisma.profiles.findUnique();
+        // TODO: find the matching profile by id
+        const profile = await prisma.profiles.findUnique({
+            where: { id: profileId },
+        });
 
         if (!profile) {
             return Response.json({ error: 'Profile not found' }, { status: 404 });
@@ -35,10 +34,10 @@ export async function GET(request, { params }) {
 // PUT - Update profile by ID
 export async function PUT(request, { params }) {
     try {
-        // Get the id from params and convert it to a number
-        const { id } = await params;
-        const profileId = parseInt(id);
-
+        // TODO: get the id from params and convert it to a number
+    const { id } = await params;
+    const profileId = Number.parseInt(id, 10);
+console.log("Updating profile with ID:", isNaN(profileId));
         if (isNaN(profileId)) {
             return Response.json({ error: 'Invalid profile ID' }, { status: 400 });
         }
@@ -49,9 +48,7 @@ export async function PUT(request, { params }) {
         const email = formData.get('email');
         const bio = formData.get('bio');
         const imgFile = formData.get('img');
-        // TODO: get the existing image URL from formData
-        const existingImageUrl = formData.get('existingImageUrl');
-        // const existingImageUrl = ;
+        const existingImageUrl = formData.get('image_url');
 
         if (!name || name.trim() === '') {
             return Response.json({ error: 'Name is required' }, { status: 400 });
@@ -84,12 +81,12 @@ export async function PUT(request, { params }) {
         const updated = await prisma.profiles.update({
             where: { id: profileId },
             data: {
-                name,
-                title,
-                email,
-                bio,
-                img: imageUrl
-            }
+                name: name.trim(),
+                title: title.trim(),
+                email: email.trim(),
+                bio: bio.trim(),
+                image_url: imageUrl,
+            },
         });
 
         return Response.json({ data: updated }, { status: 200 });
@@ -110,15 +107,15 @@ export async function PUT(request, { params }) {
 // DELETE profile by ID
 export async function DELETE(request, { params }) {
     try {
-        // Get the id from params and convert it to a number
+        // TODO: get the id from params and convert it to a number
         const { id } = await params;
-        const profileId = parseInt(id);
+        const profileId = Number.parseInt(id, 10);
 
         if (isNaN(profileId)) {
             return Response.json({ error: 'Invalid profile ID' }, { status: 400 });
         }
 
-        // Delete the matching profile by id
+        // TODO: delete the matching profile by id
         await prisma.profiles.delete({
             where: { id: profileId },
         });
@@ -134,4 +131,3 @@ export async function DELETE(request, { params }) {
         return Response.json({ error: 'Failed to delete profile' }, { status: 500 });
     }
 }
-

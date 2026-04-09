@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import Link from "next/link";
 import Filters from "./components/Filters";
-import prisma from '@/app/lib/prisma'
+import prisma from '@/lib/prisma'
 
 export const runtime = "nodejs";
 

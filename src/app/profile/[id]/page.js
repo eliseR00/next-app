@@ -1,5 +1,5 @@
 import Link from "next/link";
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 
 export default async function ProfileDetailPage({ params }) {
   const { id } = await params;

@@ -1,4 +1,4 @@
-import prisma from "@/app/lib/prisma";
+import prisma from "@/lib/prisma";
 import AddProfileForm from "@/app/components/AddProfileForm";
 import DeleteButton from "@/app/components/DeleteButton";
 
