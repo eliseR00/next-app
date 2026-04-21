@@ -16,7 +16,7 @@ async function getData({ title, search }) {
   const profiles = await prisma.profiles.findMany({
     where: {
       ...(title && { title: { contains: title, mode: "insensitive" } }),
-// TODO: add search by name CHECK
+      // TODO: add search by name CHECK
       ...(search && { name: { contains: search, mode: "insensitive" } }),
     },
   });
@@ -60,6 +60,14 @@ export default async function Home({ searchParams }) {
               ))}
             </div>
           )}
+          <button onClick={() => signIn("github",
+            { callbackUrl })}>
+            Sign in with GitHub
+          </button>
+          <button onClick={() => signIn("google", { callbackUrl })}>
+            Sign in with Google
+          </button>
+
         </div>
       </div>
     </main>

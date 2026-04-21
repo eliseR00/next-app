@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "@/lib/prisma";
 
+import GitHub from "next-auth/providers/github";
+
 export const {
   auth,     // for server components & proxy
   handlers, // for route handlers (GET, POST)
@@ -39,11 +41,14 @@ export const {
             }
         },
     }),
+    GitHub,
   ],
   pages:{
     signIn: '/auth/signin',
   },
   callbacks: {
+    async session(){},
+    async jwt(){},
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = auth && auth.user;
       const path = nextUrl.pathname;
