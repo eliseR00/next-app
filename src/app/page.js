@@ -60,13 +60,7 @@ export default async function Home({ searchParams }) {
               ))}
             </div>
           )}
-          <button onClick={() => signIn("github",
-            { callbackUrl })}>
-            Sign in with GitHub
-          </button>
-          <button onClick={() => signIn("google", { callbackUrl })}>
-            Sign in with Google
-          </button>
+          
 
         </div>
       </div>
